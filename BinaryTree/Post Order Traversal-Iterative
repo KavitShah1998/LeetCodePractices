@@ -1,1 +1,68 @@
-#include 
+#include <vector>
+#include <unordered_set>
+#include <stack>
+
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+
+
+class Solution {
+public:
+    std::vector<int> postorderTraversal(TreeNode* root) {
+        std::vector<int> traversal;
+        
+        std::stack<TreeNode*> Stack;
+        
+        std::unordered_set<TreeNode*> visited;
+        
+        if(root)
+            Stack.push(root);
+        
+        
+        TreeNode* this_node{nullptr};
+        
+        while(!Stack.empty()){
+            
+            /*Get top element*/
+            this_node = Stack.top();
+            bool is_visited = (visited.find(this_node) == visited.end())? false : true;
+            
+            if(!is_visited)
+            {
+                if(this_node->left==nullptr && this_node->right == nullptr)
+                {
+                    Stack.pop();
+                    traversal.push_back(this_node->val);
+                    visited.insert(this_node);
+                    continue;
+                }
+                
+                // let the element be in the stack, and add over it first the right node(if not empty) and then the left node(if not empty)
+                                
+                if(this_node->right!=nullptr)
+                    Stack.push(this_node->right);
+                
+                
+                if(this_node->left!=nullptr)
+                    Stack.push(this_node->left);
+ 
+                
+            }
+            else{
+                // no longer need the element in the stack
+                Stack.pop();
+                // add the element to the vector
+                traversal.push_back(this_node->val);
+            }
+            
+            visited.insert(this_node);
+        }
+        return traversal;
+    }
+};
