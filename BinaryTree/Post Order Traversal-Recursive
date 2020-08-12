@@ -1,0 +1,36 @@
+#include <vector>
+
+
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+
+void func(TreeNode * node, vector<int>& traversal){
+    if(node->left!=nullptr){
+        func(node->left, traversal);
+    }
+    
+    if(node->right!=nullptr){
+        func(node->right, traversal);
+    }
+    
+    traversal.push_back(node->val); 
+    
+}
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> traversal;
+        
+        if(root)
+            func(root, traversal);
+        
+        return traversal;
+    }
+};
