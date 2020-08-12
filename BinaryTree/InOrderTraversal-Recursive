@@ -1,0 +1,44 @@
+#include <vector>
+
+  struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+ 
+class Solution {
+public:
+    void func(TreeNode* this_node, std::vector<int>& traversal){
+        
+        /*Node is a leaf node*/
+        if(this_node->left == nullptr && this_node->right == nullptr){
+            traversal.push_back(this_node->val);
+            return;
+        }
+            
+        /* Check left node, if its not null, go left*/
+        if(this_node->left != nullptr)
+            func(this_node->left, traversal);
+            
+        /* Check for val of current node*/
+        traversal.push_back(this_node->val);
+            
+        /* Check for right node, if its not null ptr, go right*/
+        if(this_node->right !=nullptr)
+            func(this_node->right, traversal);
+    }
+    
+    
+    vector<int> inorderTraversal(TreeNode* root) {
+        
+        vector<int> traversal;
+        if(root)
+            func(root, traversal);
+        
+        return traversal;
+        
+    }
+};
