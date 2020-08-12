@@ -1,0 +1,71 @@
+#include <vector>
+#include <stack>
+#include <queue>
+#include <unordered_map>
+
+struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ };
+ 
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        
+        std::vector<std::vector<int>> traversal;
+        std::vector<int> breadths;
+        
+        std::queue<TreeNode* > qu;
+        
+        std::unordered_map<TreeNode*, int> level_table; // hash table to store levels
+        
+        if(root!=nullptr){
+            qu.push(root);
+            level_table.insert(std::make_pair(root, 0));
+        }
+        
+        int prev_level{0};
+        
+        TreeNode* this_node = nullptr;
+        while(!qu.empty()){
+            this_node = qu.front();
+            
+            qu.pop();
+            
+            int this_node_level = level_table[this_node];
+            if(prev_level==this_node_level){
+                breadths.push_back(this_node->val);
+            }
+            else if(this_node_level==prev_level+1){
+                traversal.push_back(breadths);
+                breadths.clear();
+                breadths.push_back(this_node->val);
+            }
+            
+            if(this_node->left!=nullptr){
+                qu.push(this_node->left);
+                std::pair<TreeNode*,int> left_node ((this_node->left), this_node_level+1);
+                level_table.insert(left_node);
+            }
+            
+            if(this_node->right!=nullptr){
+                qu.push(this_node->right);
+                std::pair<TreeNode*,int> right_node ((this_node->right), this_node_level+1);
+                level_table.insert(right_node);
+            }
+            
+
+            prev_level = this_node_level;
+        }
+        
+        if(!breadths.empty())
+            traversal.push_back(breadths);
+        
+        return traversal;
+    }
+
+};
