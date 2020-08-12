@@ -1,0 +1,68 @@
+
+#include <vector>
+#include <stack>
+#include <unordered_set>
+
+
+ struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ };
+ 
+class Solution {
+public:
+   
+    
+    vector<int> inorderTraversal(TreeNode* root) {
+        
+        std::vector<int> traversal;
+
+        std::unordered_set <TreeNode* > visited;
+        
+        std::stack <TreeNode *> S;
+        
+        if(root)
+            S.emplace(root);
+       
+        TreeNode* this_node = nullptr;
+        while(!S.empty()){
+            
+            /* Get the element off the stack top*/
+            this_node = S.top();
+            S.pop();
+            
+                
+            /*If its right and left are empty, add the value to vector*/
+            if(this_node->right == nullptr && this_node->left == nullptr){
+                traversal.push_back(this_node->val);
+                visited.insert(this_node);
+                continue;
+            }
+            
+            bool is_visited = (visited.find(this_node) == visited.end())? false : true;
+            
+            /*If right node is not empty, add it to the stack*/
+            if(this_node->right && !is_visited ) /*if right node is not nullptr and this node aint visited*/
+                S.emplace(this_node->right);
+            
+            if( !is_visited) /*This node is not yet visited .... add it to stack*/
+                S.emplace(this_node);
+            else  /*add the data to traversal i.e the node is being revisited(first visit added its left node. this visit will add the current node's data to vector)*/
+                traversal.push_back(this_node->val);
+                
+            if( !is_visited && this_node->left)  /*left node is not a nullptr and this node aint visited*/
+                S.emplace(this_node->left);
+            
+            
+            /*Add the current node to visited*/
+            visited.insert(this_node);
+            
+        }
+        return traversal;
+        
+    }
+};
