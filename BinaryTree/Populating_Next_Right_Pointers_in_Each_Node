@@ -1,0 +1,51 @@
+
+/* My Solution*/
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+
+
+class Solution {
+public:
+    std::unordered_map<int, Node*> level_hash; // if the current level is not yet reached, the *next will be null, and fill the address of current node at Currnt Level in the hash table.
+    
+    Node* connect(Node* root) {
+            Recursion(root, 0);
+        return root;
+    }
+    
+    
+    void Recursion (Node* root, int level){
+        if(!root)
+            return;
+        
+        
+        if(level_hash.find(level) == level_hash.end()){
+            root->next = NULL;
+            level_hash.insert(std::make_pair(level, root));
+        }
+        else{
+            root->next = level_hash[level];
+            level_hash[level] = root;
+        }
+        
+        Recursion(root->right, level+1);
+        Recursion(root->left, level+1);
+        
+        return;
+    }
+};
+
+
+/* Most Optimal Solution from LeetCode (for reference)*/
