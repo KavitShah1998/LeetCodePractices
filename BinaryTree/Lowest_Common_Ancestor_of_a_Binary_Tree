@@ -63,7 +63,7 @@ count = ((root==p || root==q)? 1 : 0) + ((left_tree)? 1 : 0) + ((right_tree)? 1 
 
 
 // ###### CODE TYPE 3 ########
-// Runtime: 24 ms (beats 67% submissions)
+// Runtime: 24 ms (beats 67% submissions)  | 40 ms (beats 18% submissions)
 // Space Util: 14.3 MB (beats 82% submissions)
 /*
 // Store how many nodes (including self) returned true
