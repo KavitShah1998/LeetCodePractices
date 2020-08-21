@@ -1,0 +1,73 @@
+class Solution {
+public:
+    
+    TreeNode* result = nullptr;
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        Recursion(root, p, q);
+        return result;
+    }
+    
+    bool Recursion(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(!root)
+            return false;
+        
+        bool left_tree = Recursion(root->left, p, q);
+        bool right_tree = Recursion(root->right, p, q);
+        
+        int count = 0; // Store how many nodes (including self) returned true
+        // if exactly 2 nodes returned true ... that is the answer
+        
+        count = ((root==p || root==q)? 1 : 0) + ((left_tree)? 1 : 0) + ((right_tree)? 1 : 0);
+        
+        if(count ==2)
+        {
+            result = root;
+            return true;
+        }
+        else if(count == 1)
+            return true;
+        else
+            return false;
+    }
+ 
+};
+
+
+
+/* A few  Observations */
+
+// ###### CODE TYPE 1 ########
+
+// Runtime: 20 ms (beats 89% submissions)
+// Space Util: 14.3 MB (beats 79% submissions)
+/*
+int count = 0; // Store how many nodes (including self) returned true
+        // if exactly 2 nodes returned true ... that is the answer
+        
+count += ((root==p || root==q)? 1 : 0);
+count += ((left_tree)? 1 : 0);
+count += ((right_tree)? 1:0);
+*/
+
+// ###### CODE TYPE 2 ########
+
+// Runtime: 32 ms  (beats 33% submissions)
+// Space Util: 14.4 MB (beats 45% submissions)
+/*
+int count = 0; // Store how many nodes (including self) returned true
+        // if exactly 2 nodes returned true ... that is the answer
+       
+count = ((root==p || root==q)? 1 : 0) + ((left_tree)? 1 : 0) + ((right_tree)? 1 : 0);
+*/
+
+
+// ###### CODE TYPE 3 ########
+// Runtime: 24 ms (beats 67% submissions)
+// Space Util: 14.3 MB (beats 82% submissions)
+/*
+// Store how many nodes (including self) returned true
+        // if exactly 2 nodes returned true ... that is the answer
+        
+int count = ((root==p || root==q)? 1 : 0) + ((left_tree)? 1 : 0) + ((right_tree)? 1 : 0);
+*/
