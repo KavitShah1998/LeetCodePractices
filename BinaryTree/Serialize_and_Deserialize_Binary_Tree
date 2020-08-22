@@ -2,9 +2,8 @@ class Codec {
 public:
 
     // Encodes a tree to a single string.
-    string serialize(TreeNode* root) {  
-        // Serializing the tree based on BFS Approach where nullptrs are represented by '#'
-        std::string result{"["};
+    string serialize(TreeNode* root) {
+        std::string result{""};
         std::queue<TreeNode*> Qu;
         Qu.push(root);
         
@@ -13,16 +12,15 @@ public:
             Qu.pop();
             
             if(curr){
-                result += std::to_string(curr->val) + ",";
+                result += std::to_string(curr->val) + " ";
                 Qu.push(curr->left);
                 Qu.push(curr->right);
             }
             else{
-                result += "#," ;
+                result += "# " ;
             }
         }
         result.erase(result.length()-1);
-        result += "]";
         return result;
         
     }
@@ -30,45 +28,32 @@ public:
     // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
         
-        std::vector<string> Data;
-
-        // Remove the box parenthesis
-        data.erase(data.begin());
-        data.erase(data.length()-1);
         
-        //Replace all the ',' with ' '
-        std::replace(data.begin(), data.end(),',', ' ' );
+        
         std::istringstream data_stream(data);
         
-        //store the elements of the string stream into vector of strings
         string word{""};
-        while(data_stream >> word){
-            Data.push_back((word));
-            word.clear();
-        }
-
-        // Create and initialize the root node 
-        TreeNode* root = nullptr;
-        if(Data[0]!="#")
-            root = new TreeNode(std::stoi(Data[0]));
         
-        else  // if the tree is empty, return nullptr for root node 
-            return root;
+        data_stream >> word;
+        TreeNode* root{nullptr};
+        if(word!="#")
+            root = new TreeNode(std::stoi(word));
+        
+        else 
+            return nullptr;
         
         std::queue<TreeNode*> Qu;
-        // Maintaining a queue for handling Data (similar to what we did in BFS)
-        
         Qu.push(root);
         int cnt{0};
         
-        // Iterate through the Data vector and maintain counts of 2 for popping elements off the Q front.
-        for(size_t i = 1; i < Data.size(); i++){
+        
+        while(data_stream >> word){
 
             if(cnt == 0)
             {
-                if(Data[i]!="#")
+                if(word!="#")
                 {
-                    TreeNode* node = new TreeNode(std::stoi(Data[i]));
+                    TreeNode* node = new TreeNode(std::stoi(word));
                     Qu.front()->left = node;
                     Qu.push(node);
                 }
@@ -79,9 +64,9 @@ public:
                 cnt++;
             }
             else if(cnt == 1){
-                if(Data[i]!="#")
+                if(word!="#")
                 {
-                    TreeNode* node = new TreeNode(std::stoi(Data[i]));
+                    TreeNode* node = new TreeNode(std::stoi(word));
                     Qu.front()->right = node;
                     Qu.push(node);
                 }
@@ -97,7 +82,9 @@ public:
                 Qu.pop();
             }
             
+            word.clear();            
         }
+        
         return root;
     }
     
