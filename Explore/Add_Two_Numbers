@@ -1,0 +1,45 @@
+/*
+Approach: Recursive
+Runtime: 32 ms (beats 79% submissions)
+Space Utilization: 69.9 MB (beats 91% solutions)
+*/
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        addTwoNumbersRecursive(l1, l2, 0);
+        
+        return l1;
+    }
+    
+    ListNode* addTwoNumbersRecursive(ListNode* l1, ListNode* l2, int carryover){
+        if(l1 == nullptr && l2 == nullptr){
+            if(carryover>0){
+                ListNode* Node = new ListNode(carryover);
+                return Node;
+            }
+            else{
+                return nullptr;
+            }
+        }
+        
+            
+        int num{0};
+        num = ((l1)? (l1->val) : 0) + ((l2)? (l2->val) : 0) + carryover;
+        
+        if(l1) { // if l1 node exists (doesn't matter if l2 exists or not, since we are appending the data to linked list l1)
+            l1->val = num%10;
+            l1->next = addTwoNumbersRecursive(l1->next, (l2)? (l2->next) : nullptr, num/10);
+            
+        }
+            
+        else if(!l1 && l2) { // if l1 does not exist but l2 does exist. we then create a new node for l1 and append it to the list l1
+            int sum = num%10;
+            l1 = new ListNode(sum);
+            l1->next = addTwoNumbersRecursive(l1->next, l2->next, num/10);
+        }
+        
+        return l1;
+
+    }
+};
