@@ -1,0 +1,43 @@
+    /*
+    Approach: Iterative
+    Runtime: 20 ms (beats 92% of submissions)
+    Memory : 8 MB (beats 77 % of submissions)
+    */
+    string convert(string s, int numRows) {
+        int size = s.length();
+        if(!size)
+            return "";
+        else if(size == 1 || numRows == 1)
+            return s;
+        
+        std::string r[numRows];
+        string result{""};
+        bool down{true};
+        int index{-1};
+        for(auto i=0; i<size; i++){
+            
+            if(down){
+                index++;
+                r[index] += (s[i]);
+            }
+            else{
+                index--;
+                r[index] += (s[i]);
+            }
+            
+            
+            if(index == numRows-1){ // to compensate for extra increment in previous iteration
+                down = false;
+            }
+            if(index == 0){
+                down = true;
+            }
+        }
+        
+         
+        for(int i=0; i<numRows ; i++){
+                    result += r[i];
+            }
+        
+        return result;
+    }
