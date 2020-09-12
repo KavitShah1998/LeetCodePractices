@@ -1,0 +1,119 @@
+class Solution {
+public:
+
+    /*
+    Approach 1: Maps
+    Runtime: 36ms (beats 22.85% submissions)
+    Memory Util: 8MB (beats 40% submissions)
+    */
+    int romanToInt(string s) {
+        int num{0};
+        std::unordered_map<char, int> maps{{'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000}};
+
+        
+        num+=maps[s[s.length()-1]];
+        
+        for(int i= s.length()-2; i>=0; i--){
+            if(maps[s[i]] < maps[s[i+1]])
+                num -= maps[s[i]];
+            else
+                num +=maps[s[i]];
+        }
+        return num;
+    }
+    
+    /*Method 2: Switch Case
+    Runtime: 4ms (beats 98.45% submissions)
+    Memory Util:6MB (beats 81.79% submission)
+    */
+    int romanToInt(string s) {
+        int num{0};
+        
+        int prev{0};
+        
+        for(int i= s.length()-1; i>=0; i--){
+            int data{0};
+            switch(s[i]){
+                case 'I':
+                    data = 1;
+                    break;
+                case 'V':
+                    data = 5;
+                    break;
+                case 'X':
+                    data = 10;
+                    break;
+                case 'L':
+                    data = 50;
+                    break;
+                case 'C':
+                    data = 100;
+                    break;
+                case 'D':
+                    data = 500;
+                    break;
+                case 'M':
+                    data = 1000;
+                    break;
+            }
+            
+            if(i==s.length()-1)
+                num +=data;
+            else if(data < prev)
+                num -= data;
+            else
+                num +=data;
+            
+            prev = data;
+        }
+        return num;
+    }
+    
+    /*Method 3: Switch Case with Function
+    Runtime: 16 ms, faster than 66.56%
+    Memory Util: 6.1 MB, less than 72.48%
+    */
+    int romanToInt(string s) {
+        int num{0};
+        
+        int prev{0};
+        
+        for(int i= s.length()-1; i>=0; i--){
+            int data{0};
+            switch(s[i]){
+                case 'I':
+                    data = 1;
+                    break;
+                case 'V':
+                    data = 5;
+                    break;
+                case 'X':
+                    data = 10;
+                    break;
+                case 'L':
+                    data = 50;
+                    break;
+                case 'C':
+                    data = 100;
+                    break;
+                case 'D':
+                    data = 500;
+                    break;
+                case 'M':
+                    data = 1000;
+                    break;
+            }
+            
+            if(i==s.length()-1)
+                num +=data;
+            else if(data < prev)
+                num -= data;
+            else
+                num +=data;
+            
+            prev = data;
+        }
+        return num;
+    }
+    
+};
